@@ -2,7 +2,7 @@ import {
     Layers3,
     Map,
     ShieldCheck,
-    Smartphone,
+    // Smartphone,
     Sparkles,
     Zap,
   } from "lucide-react";
@@ -17,21 +17,35 @@ import {
   
   const featuredBuilds: FeaturedBuild[] = [
     {
-      title: "US Brew Passport",
-      type: "Mobile Product",
-      icon: Map,
-      summary:
-        "A location-aware mobile experience designed around brewery discovery, QR redemption, and customer engagement.",
-      highlights: ["React Native + Expo", "QR workflow", "Mobile UX", "Product launch thinking"],
-    },
-    {
-      title: "Map Review Platform",
-      type: "Firebase App System",
-      icon: Smartphone,
-      summary:
-        "Interactive map pins with user reviews, ratings, authentication, and real-time database-backed content.",
-      highlights: ["Firestore data modeling", "Auth flows", "Map UI", "Review UX"],
-    },
+        title: "US Brew Passport",
+        type: "Mobile Product • React Native",
+        icon: Map,
+        summary:
+          "A mobile brewery discovery and rewards platform designed to help users explore participating breweries, unlock rewards, and engage with local brewery experiences through QR-based interactions and location-aware features.",
+        highlights: [
+          "React Native",
+          "Expo",
+          "Firebase",
+          "QR Rewards",
+          "Mobile UX",
+          "Product Design",
+        ],
+      },
+      {
+        title: "Potty Pal",
+        type: "Location-Based Mobile Product • React Native",
+        icon: Map,
+        summary:
+          "A community-driven restroom discovery app that allows users to locate, review, rate, and share public restrooms through an interactive map experience designed for mobile-first usability.",
+        highlights: [
+          "React Native",
+          "Expo",
+          "Firebase",
+          "Maps Integration",
+          "Community Reviews",
+          "Mobile UX",
+        ],
+      },
     {
       title: "Creative Game Experiments",
       type: "Interactive UX Lab",

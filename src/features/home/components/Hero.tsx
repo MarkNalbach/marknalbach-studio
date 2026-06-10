@@ -13,6 +13,14 @@ function Hero({ stack }: HeroProps) {
       transition={{ duration: 0.7 }}
       className="relative z-10 flex flex-col justify-center"
     >
+      <div className="mb-6">
+        <p className="text-sm font-bold uppercase tracking-[.3em] text-cyan-300">
+          Interactive Resume Experience
+        </p>
+
+        <p className="mt-2 text-sm text-slate-400">Designed and developed by Mark Nalbach</p>
+      </div>
+
       <div className="mb-5 inline-flex w-fit items-center gap-2 rounded-full border border-cyan-300/20 bg-cyan-300/10 px-4 py-2 text-sm text-cyan-100 shadow-lg backdrop-blur">
         <Sparkles className="h-4 w-4" />
         Interactive frontend systems • React • AI • UX engineering

@@ -1,4 +1,4 @@
-import { useMemo, useState, } from "react";
+import { useMemo, useState } from "react";
 import SectionHeader from "./components/SectionHeader";
 import BackgroundGrid from "./components/BackgroundGrid";
 import Nav from "./components/Nav";
@@ -8,12 +8,12 @@ import EngineeringSystemsSection from "./sections/EngineeringSystemsSection";
 import DeveloperMindsetSection from "./sections/DeveloperMindsetSection";
 import HeroConsoleSection from "./sections/HeroConsoleSection";
 import {
-    featuredBuilds,
-    mindsetCards,
-    profile,
-    qualityChecks,
-    terminalResponses,
-  } from "../../content/homeContent";
+  featuredBuilds,
+  mindsetCards,
+  profile,
+  qualityChecks,
+  terminalResponses,
+} from "../../content/homeContent";
 
 type TerminalCommand = keyof typeof terminalResponses;
 
@@ -47,7 +47,7 @@ function HomePage() {
         runCommand={runCommand}
         activeCommand={activeCommand}
         terminalLines={terminalLines}
-        />
+      />
 
       <FeaturedBuildsSection featuredBuilds={featuredBuilds} />
 
@@ -64,8 +64,37 @@ function HomePage() {
 
       <DeveloperMindsetSection mindsetCards={mindsetCards} />
 
-      <footer className="relative border-t border-white/10 px-6 py-10 text-center text-sm text-slate-400">
-        <p>Mark Nalbach Studio — an interactive frontend engineering portfolio built with React, thoughtful UX, and production-minded systems.</p>
+      <footer className="relative border-t border-white/10 px-6 py-12">
+        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 text-center md:flex-row md:text-left">
+          <div>
+            <p className="text-sm font-semibold text-white">Mark Nalbach Studio</p>
+
+            <p className="mt-2 max-w-xl text-sm leading-6 text-slate-400">
+              Interactive frontend engineering portfolio focused on React, thoughtful UX,
+              AI-enhanced interfaces, and production-minded systems.
+            </p>
+          </div>
+
+          <div className="flex flex-col items-center gap-3 md:items-end">
+            <a
+              href="mailto:marknalbach@gmail.com"
+              className="text-sm font-medium text-cyan-200 transition hover:text-cyan-100"
+            >
+              marknalbach@gmail.com
+            </a>
+            <p className="text-xs text-slate-500">Designed and developed by Mark Nalbach</p>
+
+            <a
+              href="https://github.com/MarkNalbach/marknalbach-studio"
+              target="_blank"
+              rel="noreferrer"
+              className="text-xs text-slate-500 transition hover:text-slate-300"
+            >
+              github.com/MarkNalbach/marknalbach-studio
+            </a>
+
+          </div>
+        </div>
       </footer>
     </main>
   );
