@@ -14,15 +14,15 @@ interface BuildDetailProps {
 const defaultDetails = [
   {
     label: "Product Goal",
-    body: "Create an experience that feels useful immediately, reduces friction, and gives users a clear reason to keep interacting.",
+    body: "Create an interactive browser-based card game that demonstrates complex frontend state management, drag-and-drop interactions, game rule validation, and polished user experience design within a single-page React application.",
   },
   {
     label: "Technical Story",
-    body: "Structure the interface around reusable React components, typed data, clear state boundaries, and future-ready service layers.",
+    body: "Built with React, TypeScript, and dnd-kit. The game uses a custom rules engine to validate sets, runs, and wild cards while maintaining turn state, scoring, drag-and-drop interactions, and phase completion logic.",
   },
   {
     label: "UX Decision",
-    body: "Prioritize fast comprehension, mobile-friendly flows, and small interaction details that make the product feel polished.",
+    body: "Designed around intuitive gameplay with visual cues, animated deck and discard interactions, real-time validation, completion feedback, and a layout that teaches the rules through interaction rather than lengthy instructions.",
   },
 ];
 
@@ -83,6 +83,14 @@ function BuildDetail({ build }: BuildDetailProps) {
           <h3 className="mt-3 text-3xl font-black text-white">{build.title}</h3>
 
           <p className="mt-4 leading-8 text-slate-300">{build.summary}</p>
+          {build.title === "Phase Forge" && (
+            <a
+              href="/phase-forge"
+              className="mt-5 inline-flex rounded-2xl bg-cyan-300 px-5 py-3 text-sm font-bold text-slate-950 shadow-xl shadow-cyan-950/30 transition hover:-translate-y-0.5 hover:bg-cyan-200"
+            >
+              Play Phase Forge
+            </a>
+          )}
         </div>
 
         <div className="grid gap-4 md:grid-cols-3">

@@ -12,7 +12,7 @@ function BuildCard({ build, isSelected, onClick }: BuildCardProps) {
   return (
     <button
       onClick={onClick}
-      className={`group rounded-[1.75rem] border p-5 text-left shadow-xl backdrop-blur transition ${
+      className={`group cursor-pointer flex h-full flex-col rounded-[1.75rem] border p-5 text-left shadow-xl backdrop-blur transition ${
         isSelected
           ? "border-cyan-300/35 bg-cyan-300/10 shadow-cyan-950/20"
           : "border-white/10 bg-white/[.055] hover:-translate-y-1 hover:bg-white/[.08]"
@@ -32,7 +32,7 @@ function BuildCard({ build, isSelected, onClick }: BuildCardProps) {
 
       <p className="mt-3 leading-7 text-slate-300">{build.summary}</p>
 
-      <div className="mt-5 flex flex-wrap gap-2">
+      <div className="mt-auto flex flex-wrap gap-2 pt-5">
         {build.highlights.map((highlight) => (
           <span
             key={highlight}

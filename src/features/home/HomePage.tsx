@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import SectionHeader from "./components/SectionHeader";
 import BackgroundGrid from "./components/BackgroundGrid";
 import Nav from "./components/Nav";
@@ -15,42 +15,75 @@ import {
   terminalResponses,
 } from "../../content/homeContent";
 
-type TerminalCommand = keyof typeof terminalResponses;
+export interface TerminalHistoryItem {
+  command: string;
+  lines: string[];
+}
 
 function HomePage() {
-  const [activeCommand, setActiveCommand] = useState<TerminalCommand>("help");
-  const [input, setInput] = useState("help");
+  const [activeCommand, setActiveCommand] = useState<string>("help");
+  const [input, setInput] = useState<string>("help");
+  const [terminalHistory, setTerminalHistory] = useState<TerminalHistoryItem[]>([
+    {
+      command: "help",
+      lines: terminalResponses.help,
+    },
+  ]);
 
-  const terminalLines = useMemo(() => {
+  function getCommandLines(command: string) {
     return (
-      terminalResponses[activeCommand] ?? [
-        `Command not found: ${activeCommand}`,
-        "Try: help, about, skills, projects, ai, test, docs",
+      terminalResponses[command] ?? [
+        `Command not found: ${command}`,
+        "Try: help, about, skills, projects, brew-passport, potty-pal, phase-forge, contact, clear",
       ]
     );
-  }, [activeCommand]);
+  }
+
+  function runTerminalCommand(command: string) {
+    const normalized = command.trim().toLowerCase() || "help";
+
+    setInput(normalized);
+    setActiveCommand(normalized);
+
+    if (normalized === "clear") {
+      setTerminalHistory([]);
+      return;
+    }
+
+    setTerminalHistory((current) => [
+      ...current,
+      {
+        command: normalized,
+        lines: getCommandLines(normalized),
+      },
+    ]);
+  }
 
   function runCommand(event: React.SyntheticEvent<HTMLFormElement>) {
     event.preventDefault();
-    const normalized = input.trim().toLowerCase() || "help";
-    setActiveCommand(normalized as TerminalCommand);
+    runTerminalCommand(input);
+  }
+
+  function runDirectCommand(command: string) {
+    runTerminalCommand(command);
   }
 
   return (
     <main className="min-h-screen overflow-hidden bg-[#090b12] text-slate-100">
       <BackgroundGrid />
       <Nav />
+
       <HeroConsoleSection
         stack={profile.stack}
         input={input}
         setInput={setInput}
         runCommand={runCommand}
+        runDirectCommand={runDirectCommand}
         activeCommand={activeCommand}
-        terminalLines={terminalLines}
+        terminalHistory={terminalHistory}
       />
 
       <FeaturedBuildsSection featuredBuilds={featuredBuilds} />
-
       <EngineeringSystemsSection />
 
       <section id="quality" className="relative mx-auto max-w-7xl px-6 py-16 lg:px-8">
@@ -59,6 +92,7 @@ function HomePage() {
           title="Cypress checks become part of the story."
           body="Automated checks can run on commits and pull requests, while the portfolio visually explains that this was built like a production product."
         />
+
         <QualityGrid qualityChecks={qualityChecks} />
       </section>
 
@@ -82,6 +116,7 @@ function HomePage() {
             >
               marknalbach@gmail.com
             </a>
+
             <p className="text-xs text-slate-500">Designed and developed by Mark Nalbach</p>
 
             <a
@@ -92,7 +127,6 @@ function HomePage() {
             >
               github.com/MarkNalbach/marknalbach-studio
             </a>
-
           </div>
         </div>
       </footer>
