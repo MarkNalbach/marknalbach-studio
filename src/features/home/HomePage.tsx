@@ -194,12 +194,10 @@ function HomePage() {
         setInput={setInput}
         runCommand={runCommand}
         runDirectCommand={runDirectCommand}
-        activeCommand={activeCommand}
         terminalHistory={terminalHistory}
         consoleMode={consoleMode}
         setConsoleMode={setConsoleMode}
         isThinking={isThinking}
-        thinkingDots={thinkingDots}
       />
 
       <AboutMarkSection />

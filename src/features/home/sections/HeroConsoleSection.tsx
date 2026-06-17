@@ -10,12 +10,10 @@ interface HeroConsoleSectionProps {
   setInput: React.Dispatch<React.SetStateAction<string>>;
   runCommand: (event: React.SyntheticEvent<HTMLFormElement>) => void;
   runDirectCommand: (command: string) => void;
-  activeCommand: string;
   terminalHistory: TerminalHistoryItem[];
   consoleMode: ConsoleMode;
   setConsoleMode: React.Dispatch<React.SetStateAction<ConsoleMode>>;
   isThinking: boolean;
-  thinkingDots: string;
 }
 
 function HeroConsoleSection({
@@ -24,12 +22,10 @@ function HeroConsoleSection({
   setInput,
   runCommand,
   runDirectCommand,
-  activeCommand,
   terminalHistory,
   consoleMode,
   setConsoleMode,
   isThinking,
-  thinkingDots,
 }: HeroConsoleSectionProps) {
   return (
     <section className="relative mx-auto grid max-w-7xl gap-10 px-6 pb-20 pt-12 lg:grid-cols-[1.05fr_.95fr] lg:px-8 lg:pt-20">
@@ -40,12 +36,10 @@ function HeroConsoleSection({
         setInput={setInput}
         runCommand={runCommand}
         runDirectCommand={runDirectCommand}
-        activeCommand={activeCommand}
         terminalHistory={terminalHistory}
         consoleMode={consoleMode}
         setConsoleMode={setConsoleMode}
         isThinking={isThinking}
-        thinkingDots={thinkingDots}
       />
     </section>
   );
