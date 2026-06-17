@@ -26,10 +26,8 @@ type ConsoleMode = "commands" | "portfolio-ai" | "local-ai";
 
 function HomePage() {
   const [consoleMode, setConsoleMode] = useState<ConsoleMode>("commands");
-  const [activeCommand, setActiveCommand] = useState<string>("help");
   const [input, setInput] = useState<string>("help");
   const [isThinking, setIsThinking] = useState(false);
-  const [thinkingDots, setThinkingDots] = useState("...");
   const [terminalHistory, setTerminalHistory] = useState<TerminalHistoryItem[]>([
     {
       command: "help",
@@ -51,8 +49,6 @@ function HomePage() {
   function runTerminalCommand(command: string) {
     const normalized = command.trim().toLowerCase() || "help";
 
-    setActiveCommand(normalized);
-
     if (normalized === "clear") {
       setInput("");
       setTerminalHistory([]);
@@ -68,16 +64,8 @@ function HomePage() {
     }
 
     if (consoleMode === "portfolio-ai") {
-      setThinkingDots(".");
       setIsThinking(true);
-      const thinkingInterval = window.setInterval(() => {
-        setThinkingDots((current) => {
-          if (current === "...") return ".";
-          if (current === ".") return "..";
-          return "...";
-        });
-      }, 300);
-
+    
       setTerminalHistory((current) => [
         ...current,
         {
@@ -85,7 +73,7 @@ function HomePage() {
           lines: ["Portfolio AI is thinking..."],
         },
       ]);
-
+    
       window.setTimeout(() => {
         setTerminalHistory((current) => [
           ...current.slice(0, -1),
@@ -94,12 +82,10 @@ function HomePage() {
             lines: searchPortfolioKnowledge(normalized),
           },
         ]);
-
-        window.clearInterval(thinkingInterval);
+    
         setIsThinking(false);
-        setThinkingDots("...");
       }, 1500);
-
+    
       return;
     }
 
@@ -138,7 +124,6 @@ function HomePage() {
 
   useEffect(() => {
     if (consoleMode === "commands") {
-      setActiveCommand("help");
       setInput("help");
       setTerminalHistory([
         {
@@ -149,7 +134,6 @@ function HomePage() {
     }
 
     if (consoleMode === "portfolio-ai") {
-      setActiveCommand("portfolio-ai");
       setInput("");
       setTerminalHistory([
         {
@@ -166,7 +150,6 @@ function HomePage() {
     }
 
     if (consoleMode === "local-ai") {
-      setActiveCommand("local-ai");
       setInput("");
       setTerminalHistory([
         {

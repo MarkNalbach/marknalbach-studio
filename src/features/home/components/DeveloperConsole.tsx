@@ -8,12 +8,10 @@ interface DeveloperConsoleProps {
   setInput: React.Dispatch<React.SetStateAction<string>>;
   runCommand: (event: React.SyntheticEvent<HTMLFormElement>) => void;
   runDirectCommand: (command: string) => void;
-  activeCommand: string;
   terminalHistory: TerminalHistoryItem[];
   consoleMode: ConsoleMode;
   setConsoleMode: React.Dispatch<React.SetStateAction<ConsoleMode>>;
   isThinking: boolean;
-  thinkingDots: string;
 }
 
 type ConsoleMode = "commands" | "portfolio-ai" | "local-ai";
@@ -46,12 +44,10 @@ function DeveloperConsole({
   setInput,
   runCommand,
   runDirectCommand,
-  activeCommand,
   terminalHistory,
   consoleMode,
   setConsoleMode,
   isThinking,
-  thinkingDots,
 }: DeveloperConsoleProps) {
   const historyContainerRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
