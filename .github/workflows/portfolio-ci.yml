@@ -25,3 +25,13 @@ jobs:
 
       - name: Build project
         run: npm run build
+
+      - name: Start preview server
+        run: npm run preview -- --host 0.0.0.0 &
+
+      - name: Run Cypress tests
+        uses: cypress-io/github-action@v6
+        with:
+          wait-on: "http://localhost:4173"
+          browser: chrome
+          command: npm run cy:run
