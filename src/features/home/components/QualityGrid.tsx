@@ -8,7 +8,7 @@ interface QualityGridProps {
 function QualityGrid({ qualityChecks }: QualityGridProps) {
   return (
     <div className="mt-10 grid gap-5 lg:grid-cols-[.9fr_1.1fr]">
-      <div className="rounded-[2rem] border border-white/10 bg-white/[.055] p-6 shadow-2xl backdrop-blur">
+      <div className="rounded-[2rem] border border-white/10 bg-white/[.055] p-6 shadow-2xl">
         <div className="mb-5 flex items-center gap-3">
           <TestTube2 className="h-5 w-5 text-cyan-300" />
 
@@ -33,7 +33,7 @@ function QualityGrid({ qualityChecks }: QualityGridProps) {
       </div>
 
       <div className="grid gap-4">
-        <div className="rounded-2xl border border-white/10 bg-slate-950/55 p-4 shadow-lg backdrop-blur">
+        <div className="rounded-2xl border border-white/10 bg-slate-950/55 p-4 shadow-lg">
           <div className="mb-3 flex items-center gap-2">
             <TestTube2 className="h-4 w-4 text-cyan-300" />
             <span className="text-sm font-bold text-white">Portfolio Test Suite</span>

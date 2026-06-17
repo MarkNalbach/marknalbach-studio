@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 function AboutMarkSection() {
   return (
     <section className="relative mx-auto max-w-7xl px-6 pb-16 pt-0 lg:px-8">
-      <div className="grid gap-8 rounded-[2rem] border border-white/10 bg-white/[.055] p-6 shadow-2xl backdrop-blur lg:grid-cols-[1fr_.8fr] lg:p-8">
+      <div className="grid gap-8 rounded-[2rem] border border-white/10 bg-white/[.055] p-6 shadow-2xl lg:grid-cols-[1fr_.8fr] lg:p-8">
         <div>
           <p className="mb-3 text-sm font-bold uppercase tracking-[.25em] text-cyan-300">
             About Mark

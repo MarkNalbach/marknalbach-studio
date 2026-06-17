@@ -12,7 +12,7 @@ function BuildCard({ build, isSelected, onClick }: BuildCardProps) {
   return (
     <button
       onClick={onClick}
-      className={`group cursor-pointer rounded-[1.75rem] border p-5 text-left shadow-xl backdrop-blur transition ${
+      className={`group cursor-pointer rounded-[1.75rem] border p-5 text-left shadow-xl transition ${
         isSelected
           ? "border-cyan-300 bg-cyan-300/15 shadow-cyan-950/30 ring-2 ring-cyan-300/30"
           : "border-white/10 bg-white/[.055] hover:-translate-y-1 hover:border-cyan-300/30 hover:bg-white/[.08]"

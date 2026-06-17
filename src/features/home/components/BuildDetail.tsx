@@ -72,7 +72,7 @@ function BuildDetail({ build }: BuildDetailProps) {
       key={build.title}
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      className="mt-6 rounded-[2rem] border border-cyan-300/40 bg-white/[.055] p-6 shadow-2xl backdrop-blur"
+      className="mt-6 rounded-[2rem] border border-cyan-300/40 bg-white/[.055] p-6 shadow-2xl"
     >
       <div className="grid gap-5 lg:grid-cols-[.8fr_1.2fr]">
         <div>

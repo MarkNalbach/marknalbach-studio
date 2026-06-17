@@ -12,7 +12,7 @@ function ArchitecturePanel() {
 
   return (
     <div className="mt-10 grid gap-5 lg:grid-cols-[1fr_.9fr]">
-      <div className="rounded-[2rem] border border-white/10 bg-slate-950/70 p-6 shadow-2xl backdrop-blur">
+      <div className="rounded-[2rem] border border-white/10 bg-slate-950/70 p-6 shadow-2xl">
         <div className="mb-5 flex items-center gap-3">
           <Braces className="h-5 w-5 text-cyan-300" />
 
@@ -34,7 +34,7 @@ function ArchitecturePanel() {
         </div>
       </div>
 
-      <div className="rounded-[2rem] border border-white/10 bg-white/[.055] p-6 shadow-2xl backdrop-blur">
+      <div className="rounded-[2rem] border border-white/10 bg-white/[.055] p-6 shadow-2xl">
         <div className="mb-5 flex items-center gap-3">
           <MessageSquareText className="h-5 w-5 text-cyan-300" />
 

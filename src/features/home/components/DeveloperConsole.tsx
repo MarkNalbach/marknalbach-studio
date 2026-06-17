@@ -81,7 +81,7 @@ function DeveloperConsole({
       initial={{ opacity: 0, scale: 0.96, y: 20 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
       transition={{ duration: 0.7, delay: 0.15 }}
-      className="relative z-10 flex h-[760px] flex-col overflow-hidden rounded-[2rem] border border-white/10 bg-slate-950/75 shadow-2xl shadow-cyan-950/20 backdrop-blur-xl"
+      className="relative z-10 flex h-[760px] flex-col overflow-hidden rounded-[2rem] border border-white/10 bg-slate-950/75 shadow-2xl shadow-cyan-950/20"
     >
       <div className="flex items-center justify-between border-b border-white/10 bg-white/[.04] px-5 py-4">
         <div className="flex items-center gap-3">
