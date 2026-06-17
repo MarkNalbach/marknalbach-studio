@@ -27,19 +27,21 @@ function Hero({ stack }: HeroProps) {
       </div>
 
       <h1 className="max-w-5xl font-black tracking-tight text-white">
-  <span className="block whitespace-nowrap text-4xl md:text-6xl">
-    Frontend Engineer
-  </span>
+        <span className="block whitespace-nowrap text-4xl md:text-6xl">Frontend Engineer</span>
 
-  <span className="mt-4 block bg-gradient-to-r from-cyan-200 via-indigo-200 to-emerald-200 bg-clip-text text-3xl font-medium text-transparent md:text-4xl">
-    building interactive products with React, AI, and user-centered product design.
-  </span>
-</h1>
+        <span className="mt-4 block bg-gradient-to-r from-cyan-200 via-indigo-200 to-emerald-200 bg-clip-text text-3xl font-medium text-transparent md:text-4xl">
+          building interactive products with React, AI, and user-centered product design.
+        </span>
+      </h1>
 
       <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300 md:text-xl">
-        I create polished frontend experiences focused on interaction design, modern React
-        architecture, mobile-first UX, AI-enhanced interfaces, and production-quality engineering
-        systems.
+        Why hand you a paper resume explaining what I can build when I can just show you?
+      </p>
+
+      <p className="mt-4 max-w-3xl text-base leading-8 text-slate-400 md:text-lg">
+        Explore the projects, ask questions through Portfolio AI, try the developer console, and see
+        how I approach building products, solving problems, and creating experiences people actually
+        enjoy using.
       </p>
 
       <div className="mt-8 flex flex-wrap gap-3">

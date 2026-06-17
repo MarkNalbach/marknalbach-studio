@@ -32,10 +32,12 @@ export const aboutIntro = {
   ];
 
   export const beyondCodeItems = [
-    "I enjoy building side projects simply because an idea won't leave me alone.",
-    "Many of my projects start with a real-world problem and a curiosity to see if I can solve it.",
-    "My background in animation and visual effects still influences how I think about interfaces and user experiences.",
-    "I enjoy learning new technologies by building things with them rather than just reading about them.",
+    "Family time is my favorite way to recharge and keep perspective outside of work.",
+    "You'll usually find me on the water boating or fishing whenever Wisconsin weather cooperates.",
+    "I enjoy skiing, surfing, and anything that combines adventure with a chance to learn something new.",
+    "Wine making has become a surprisingly enjoyable hobby—part science experiment, part patience test.",
+    "Most of my side projects start with curiosity. Some solve real problems. Others exist because I wanted to see if I could build them.",
+    "Whether it's software, a hobby, or a new skill, I enjoy figuring out how things work and making them a little better.",
   ];
 
   export const timelineItems = [

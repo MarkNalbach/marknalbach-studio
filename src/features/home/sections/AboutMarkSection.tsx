@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import markPhoto from "../../../images/mark.png";
 
 function AboutMarkSection() {
   return (
@@ -32,6 +33,12 @@ function AboutMarkSection() {
               software, mobile apps, interactive games, automation systems, or AI-powered
               experiences, I enjoy turning ideas into products people can actually use.
             </p>
+
+            <p className="italic text-slate-400">
+              Many of my projects start with a real problem. Others start because I convinced
+              myself, "That can't be too difficult," and then spent the next few weekends proving
+              myself wrong.
+            </p>
           </div>
 
           <div className="mt-8">
@@ -44,25 +51,26 @@ function AboutMarkSection() {
           </div>
         </div>
 
-        <div className="grid gap-4">
-          <div className="rounded-3xl border border-cyan-300/15 bg-cyan-300/10 p-5">
-            <p className="text-4xl font-black text-white">15+</p>
-            <p className="mt-2 text-sm text-cyan-100">Years building digital experiences</p>
+        <div className="space-y-4">
+          <div className="mx-auto w-full max-w-[300px] overflow-hidden rounded-[2rem] border border-white/10 shadow-xl">
+            <img src={markPhoto} alt="Mark Nalbach" className="w-full object-cover contrast-125" />
           </div>
 
-          <div className="rounded-3xl border border-white/10 bg-slate-950/55 p-5">
+          <div className="rounded-[2rem] border border-white/10 bg-slate-950/80 p-5 shadow-xl">
+            <h3 className="text-xl font-black text-white">Mark Nalbach</h3>
+
+            <p className="mt-1 text-cyan-300">Frontend Engineer</p>
+
+            <div className="mt-4 space-y-2 text-sm text-slate-400">
+              <p>📍 Stevens Point, Wisconsin</p>
+              <p>💻 15+ Years Building Digital Experiences</p>
+              <p>⚛️ React • Mobile • Cypress • AI</p>
+            </div>
+          </div>
+
+          <div className="rounded-[2rem] border border-cyan-300/10 bg-slate-950/80 p-5">
             <p className="text-4xl font-black text-white">10</p>
             <p className="mt-2 text-sm text-slate-300">Years as a Frontend Engineer at EverFi</p>
-          </div>
-
-          <div className="rounded-3xl border border-white/10 bg-slate-950/55 p-5">
-            <p className="text-sm font-bold uppercase tracking-[.2em] text-emerald-300">
-              Focus areas
-            </p>
-            <p className="mt-3 leading-7 text-slate-300">
-              React, components, product interactions, Cypress automation, mobile apps, and AI
-              experiences.
-            </p>
           </div>
         </div>
       </div>

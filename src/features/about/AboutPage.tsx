@@ -57,13 +57,16 @@ function AboutPage() {
         </div>
 
         <div className="mt-16 rounded-[2rem] border border-white/10 bg-white/[.055] p-6 shadow-2xl md:p-8">
-          <p className="text-sm font-bold uppercase tracking-[.25em] text-cyan-300">
-            Beyond the Code
-          </p>
+          <p className="text-sm font-bold uppercase tracking-[.25em] text-cyan-300">Beyond Work</p>
 
           <h2 className="mt-3 text-3xl font-black tracking-tight text-white">
-            I’m at my best when a project needs both structure and creativity.
+            Building things isn't just part of my career.
           </h2>
+
+          <p className="mt-4 max-w-3xl leading-8 text-slate-300">
+            Curiosity is what pulled me into software development in the first place, and it's still
+            what drives many of the things I enjoy outside of work.
+          </p>
 
           <div className="mt-8 grid gap-4 md:grid-cols-2">
             {beyondCodeItems.map((item) => (
