@@ -13,8 +13,8 @@ function DeveloperMindsetSection({
     <section id="mindset" className="relative mx-auto max-w-7xl px-6 py-16 lg:px-8">
       <SectionHeader
         eyebrow="Developer Mindset"
-        title="Not just what I build — how I think."
-        body="This section turns soft skills into visible engineering habits: product thinking, UX judgment, testing discipline, and creative problem solving."
+        title="How I approach building products."
+        body="The habits and principles I rely on when turning ideas into working software."
       />
 
       <div className="mt-10 grid gap-5 md:grid-cols-3">

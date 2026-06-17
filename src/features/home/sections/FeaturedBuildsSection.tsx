@@ -15,9 +15,13 @@ function FeaturedBuildsSection({ featuredBuilds }: FeaturedBuildsSectionProps) {
     <section id="builds" className="relative mx-auto max-w-7xl px-6 py-16 lg:px-8">
       <SectionHeader
         eyebrow="Featured Builds"
-        title="Real product thinking, presented interactively."
-        body="Each project can become a case study with UX decisions, architecture notes, technical challenges, and shipped outcomes."
+        title="Projects I've actually built and shipped."
+        body="Each one started as an idea, a problem worth solving, or something I wanted to see if I could build."
       />
+
+      <p className="mt-6 text-sm font-medium text-cyan-200">
+        Select a project card for additional details.
+      </p>
 
       <div className="mt-10 grid gap-5 lg:grid-cols-3">
         {featuredBuilds.map((build) => (

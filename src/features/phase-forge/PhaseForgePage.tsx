@@ -20,6 +20,8 @@ const setSlotIds = [
   "set3-slot3",
 ];
 
+const highScoreStorageKey = "phase-forge-high-score";
+
 function createEmptySetSlots() {
   return Object.fromEntries(setSlotIds.map((id) => [id, null])) as Record<string, GameCard | null>;
 }
@@ -36,6 +38,10 @@ function PhaseForgePage() {
   const [mustDiscard, setMustDiscard] = useState(false);
   const [discardPile, setDiscardPile] = useState<GameCard[]>([]);
   const [score, setScore] = useState(20);
+  const [highScore, setHighScore] = useState(() => {
+    const savedScore = window.localStorage.getItem(highScoreStorageKey);
+    return savedScore ? Number(savedScore) : 0;
+  });
   const [setSlots, setSetSlots] = useState<Record<string, GameCard | null>>(createEmptySetSlots());
 
   const set1Cards = [setSlots["set1-slot1"], setSlots["set1-slot2"], setSlots["set1-slot3"]].filter(
@@ -57,7 +63,11 @@ function PhaseForgePage() {
   useEffect(() => {
     if (set1Complete && set2Complete && set3Complete && status !== "success") {
       setStatus("success");
-      setScore((current) => current + 10);
+      setScore((current) => {
+        const nextScore = current + 10;
+        updateHighScore(nextScore);
+        return nextScore;
+      });
     }
   }, [set1Complete, set2Complete, set3Complete, status]);
 
@@ -75,6 +85,15 @@ function PhaseForgePage() {
     }
 
     return false;
+  }
+
+  function updateHighScore(nextScore: number) {
+    if (nextScore <= highScore) {
+      return;
+    }
+  
+    setHighScore(nextScore);
+    window.localStorage.setItem(highScoreStorageKey, String(nextScore));
   }
 
   function drawCard() {
@@ -284,6 +303,7 @@ function PhaseForgePage() {
 
                 <div className="mt-4 grid gap-x-8 gap-y-2 text-sm text-slate-300 sm:grid-cols-4">
                   <span className="font-bold text-cyan-300">Score: {score}</span>
+                  <span className="font-bold text-emerald-300">High Score: {highScore}</span>
                   <span>Hand: {hand.length}</span>
                   <span>Deck: {drawPile.length}</span>
                   <span>Discarded: {discardPile.length}</span>

@@ -1,4 +1,4 @@
-import { Layers3, Map, ShieldCheck, Sparkles, Gamepad2, MapPin } from "lucide-react";
+import { Layers3, Map, ShieldCheck, Sparkles, Gamepad2, MapPin, Bot } from "lucide-react";
 import type { FeaturedBuild, MindsetCardData } from "../types/home";
 
 const profile = {
@@ -62,7 +62,7 @@ const mindsetCards: MindsetCardData[] = [
   {
     icon: Layers3,
     title: "Product-minded architecture",
-    body: "I organize UI around features, reusable components, services, and documented decision points.",
+    body: "I prefer organizing projects around features, reusable components, and clear boundaries that make future changes easier.",
   },
   {
     icon: Sparkles,
@@ -72,8 +72,12 @@ const mindsetCards: MindsetCardData[] = [
   {
     icon: ShieldCheck,
     title: "Built like production",
-    body: "Even creative projects should have checks, documentation, accessibility basics, and clean handoff paths.",
+    body: "Even side projects benefit from testing, documentation, accessibility basics, and maintainable code.",
   },
+  {
+    icon: Bot,
+    title: "AI-assisted product thinking",
+    body: "I enjoy exploring how AI can improve products, workflows, and user experiences without sacrificing usability.",  },
 ];
 
 const terminalResponses = {
@@ -87,7 +91,7 @@ const terminalResponses = {
     "  about | skills | ai | test | docs",
     "",
     "Other",
-    "  contact | clear",
+    "  contact | clear | help",
   ],
   about: [
     "Mark is positioned as a creative product engineer:",
@@ -100,28 +104,29 @@ const terminalResponses = {
     "React • TypeScript • React Native • Expo • Firebase • Cypress • AI-assisted UX",
   ],
   projects: [
-    "Featured builds combine frontend engineering, UX thinking, and product-focused implementation:",
-    "- Product goal",
-    "- UX problem solved",
-    "- Technical architecture",
-    "- What shipped / what changed",
-  ],
+    "Featured builds:",
+    "✓ US Brew Passport - shipped mobile rewards product",
+    "✓ Potty Pal - map-based community utility app",
+    "✓ Phase Forge - interactive React card game",
+    "",
+    "Each project highlights product goals, technical decisions, and UX tradeoffs.",
+    ],
   ai: [
-    "AI System Design:",
-    "- Add a resume/project knowledge base in markdown or JSON",
-    "- Use a constrained assistant to answer questions about experience",
-    "- Keep the site useful even if AI is unavailable",
-    "- Show the architecture in docs so reviewers can inspect the implementation",
+    "Portfolio AI Architecture:",
+    "- Curated portfolio knowledge base",
+    "- Keyword-based knowledge retrieval",
+    "- Natural-language project exploration",
+    "- Fallback responses for unknown topics",
+    "- Designed to be replaced with a real LLM in the future",
   ],
   test: [
-    "Running portfolio quality checks...",
-    "✓ Hero renders",
-    "✓ Project cards are reachable",
-    "✓ Terminal accepts known commands",
-    "✓ Contact CTA exists",
-    "✓ Mobile navigation validated",
-    "All systems operational.",
-  ],
+    "Portfolio quality checks:",
+    "✓ TypeScript build validation",
+    "✓ Cypress coverage for Developer Console workflows",
+    "✓ Portfolio AI mode switching",
+    "✓ Firebase question response validation",
+    "✓ Real source test displayed in the Quality section",
+    ],
   docs: [
     "Engineering Documentation:",
     "/docs/architecture.md",

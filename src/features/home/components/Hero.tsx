@@ -11,7 +11,7 @@ function Hero({ stack }: HeroProps) {
       initial={{ opacity: 0, y: 24 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7 }}
-      className="relative z-10 flex flex-col justify-center"
+      className="relative z-10 flex flex-col justify-start"
     >
       <div className="mb-6">
         <p className="text-sm font-bold uppercase tracking-[.3em] text-cyan-300">
@@ -26,12 +26,15 @@ function Hero({ stack }: HeroProps) {
         Interactive frontend systems • React • AI • UX engineering
       </div>
 
-      <h1 className="max-w-5xl text-5xl font-black tracking-tight text-white md:text-7xl">
-        Frontend Engineer
-        <span className="block bg-gradient-to-r from-cyan-200 via-indigo-200 to-emerald-200 bg-clip-text text-transparent">
-          building interactive products with React, AI, and thoughtful UX.
-        </span>
-      </h1>
+      <h1 className="max-w-5xl font-black tracking-tight text-white">
+  <span className="block whitespace-nowrap text-4xl md:text-6xl">
+    Frontend Engineer
+  </span>
+
+  <span className="mt-4 block bg-gradient-to-r from-cyan-200 via-indigo-200 to-emerald-200 bg-clip-text text-3xl font-medium text-transparent md:text-4xl">
+    building interactive products with React, AI, and user-centered product design.
+  </span>
+</h1>
 
       <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300 md:text-xl">
         I create polished frontend experiences focused on interaction design, modern React

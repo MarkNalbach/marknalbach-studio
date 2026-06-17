@@ -1,0 +1,10 @@
+{
+    "compilerOptions": {
+      "types": ["cypress", "node"],
+      "target": "es2023",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "skipLibCheck": true
+    },
+    "include": ["e2e/**/*.ts"]
+  }

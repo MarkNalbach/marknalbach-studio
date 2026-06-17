@@ -1,4 +1,5 @@
 import { CheckCircle2, ExternalLink, TestTube2 } from "lucide-react";
+import developerConsoleTest from "../../../cypress/e2e/developer-console.cy.ts?raw";
 
 interface QualityGridProps {
   qualityChecks: string[];
@@ -15,9 +16,9 @@ function QualityGrid({ qualityChecks }: QualityGridProps) {
         </div>
 
         <p className="leading-8 text-slate-300">
-          GitHub Actions can run linting, type checks, and Cypress flows on every pull request. This
-          gives reviewers confidence that the creative UI is protected by real engineering
-          discipline.
+          This portfolio includes Cypress end-to-end coverage for the Developer Console, Portfolio
+          AI workflows, and key navigation paths. Quality checks are designed to validate real user
+          interactions rather than static content alone.
         </p>
 
         <div className="mt-6 flex gap-3">
@@ -31,16 +32,34 @@ function QualityGrid({ qualityChecks }: QualityGridProps) {
         </div>
       </div>
 
-      <div className="grid gap-3 md:grid-cols-2">
-        {qualityChecks.map((check) => (
-          <div
-            key={check}
-            className="flex items-center gap-3 rounded-2xl border border-white/10 bg-slate-950/55 p-4 shadow-lg backdrop-blur"
-          >
-            <CheckCircle2 className="h-5 w-5 shrink-0 text-emerald-300" />
-            <span className="text-sm text-slate-300">{check}</span>
+      <div className="grid gap-4">
+        <div className="rounded-2xl border border-white/10 bg-slate-950/55 p-4 shadow-lg backdrop-blur">
+          <div className="mb-3 flex items-center gap-2">
+            <TestTube2 className="h-4 w-4 text-cyan-300" />
+            <span className="text-sm font-bold text-white">Portfolio Test Suite</span>
           </div>
-        ))}
+
+          <div className="space-y-2">
+            {qualityChecks.map((check) => (
+              <div key={check} className="flex items-center gap-3">
+                <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-300" />
+                <span className="text-sm text-slate-300">{check}</span>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-4 border-t border-white/10 pt-3">
+            <span className="text-xs text-emerald-300">✓ Cypress coverage active</span>
+          </div>
+        </div>
+
+        <div className="rounded-2xl border border-cyan-300/10 bg-slate-950/75 p-4 font-mono text-xs shadow-lg">
+          <p className="mb-3 text-cyan-300">Portfolio Automation Example - cypress/e2e/developer-console.cy.ts</p>
+
+          <pre className="max-h-72 overflow-auto whitespace-pre-wrap rounded-xl bg-black/20 p-3 text-slate-300">
+            {developerConsoleTest}
+          </pre>
+        </div>
       </div>
     </div>
   );
