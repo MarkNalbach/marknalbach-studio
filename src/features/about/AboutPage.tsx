@@ -20,7 +20,7 @@ function AboutPage() {
           {aboutCards.map((card) => (
             <article
               key={card.title}
-              className="rounded-[1.75rem] border border-white/10 bg-white/[.055] p-6 shadow-xl backdrop-blur"
+              className="rounded-[1.75rem] border border-white/10 bg-white/[.055] p-6 shadow-x"
             >
               <h2 className="text-xl font-black text-white">{card.title}</h2>
               <p className="mt-3 leading-7 text-slate-300">{card.body}</p>
@@ -28,7 +28,7 @@ function AboutPage() {
           ))}
         </div>
 
-        <div className="mt-16 rounded-[2rem] border border-cyan-300/10 bg-slate-950/60 p-6 shadow-2xl backdrop-blur md:p-8">
+        <div className="mt-16 rounded-[2rem] border border-cyan-300/10 bg-slate-950/60 p-6 shadow-2xl md:p-8">
           <p className="text-sm font-bold uppercase tracking-[.25em] text-cyan-300">Career Path</p>
 
           <h2 className="mt-3 text-3xl font-black tracking-tight text-white">
@@ -56,7 +56,7 @@ function AboutPage() {
           </div>
         </div>
 
-        <div className="mt-16 rounded-[2rem] border border-white/10 bg-white/[.055] p-6 shadow-2xl backdrop-blur md:p-8">
+        <div className="mt-16 rounded-[2rem] border border-white/10 bg-white/[.055] p-6 shadow-2xl md:p-8">
           <p className="text-sm font-bold uppercase tracking-[.25em] text-cyan-300">
             Beyond the Code
           </p>
