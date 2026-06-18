@@ -68,9 +68,9 @@ function DeveloperConsole({
 
   function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
     const nextValue = event.target.value;
-  
+
     setInput(nextValue);
-  
+
     if (consoleMode === "portfolio-ai" && suggestedAiPrompts.includes(nextValue)) {
       runDirectCommand(nextValue);
     }
@@ -257,10 +257,10 @@ function DeveloperConsole({
                 key={mode.id}
                 type="button"
                 onClick={() => setConsoleMode(mode.id as ConsoleMode)}
-                className={`flex-1 rounded-xl px-3 py-2 font-bold transition ${
+                className={`min-h-[44px] rounded-xl px-3 font-bold transition ${
                   consoleMode === mode.id
-                    ? "bg-cyan-300 text-slate-950"
-                    : "text-slate-400 hover:text-white"
+                    ? "bg-cyan-300 text-slate-950 shadow-lg shadow-cyan-300/25"
+                    : "text-slate-400 hover:bg-white/5 hover:text-white"
                 }`}
               >
                 {mode.label}
@@ -349,7 +349,6 @@ function DeveloperConsole({
               ))}
             </datalist>
           )}
-
         </div>
       </div>
     </motion.aside>

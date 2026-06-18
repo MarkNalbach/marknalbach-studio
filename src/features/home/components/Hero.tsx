@@ -44,30 +44,30 @@ function Hero({ stack }: HeroProps) {
         enjoy using.
       </p>
 
-      <div className="mt-8 flex flex-wrap gap-3">
-        {stack.map((item) => (
-          <span
-            key={item}
-            className="rounded-full border border-white/10 bg-white/[.06] px-4 py-2 text-sm text-slate-200 shadow-sm backdrop-blur"
-          >
-            {item}
-          </span>
-        ))}
+      {/* CHANGED: stack pills → quiet metadata (labels, not buttons) */}
+      <div className="mt-8">
+        <p className="font-mono text-[11px] font-bold uppercase tracking-[.2em] text-slate-500">
+          Stack
+        </p>
+        <p className="mt-2 max-w-2xl text-sm leading-7 text-slate-500 md:text-[15px]">
+          {stack.join("  ·  ")}
+        </p>
       </div>
 
-      <div className="mt-10 flex flex-wrap gap-4">
+      {/* CHANGED: one clear primary, secondary demoted to a text link */}
+      <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-5">
         <a
           href="#builds"
-          className="rounded-2xl bg-cyan-300 px-5 py-3 text-sm font-bold text-slate-950 shadow-xl shadow-cyan-950/30 transition hover:-translate-y-0.5 hover:bg-cyan-200"
+          className="inline-flex min-h-[50px] items-center justify-center gap-2 rounded-2xl bg-cyan-300 px-6 text-sm font-bold text-slate-950 shadow-xl shadow-cyan-950/30 transition hover:-translate-y-0.5 hover:bg-cyan-200"
         >
-          Explore projects
+          Explore projects <span aria-hidden>→</span>
         </a>
 
         <a
           href="#quality"
-          className="rounded-2xl border border-white/15 bg-white/[.06] px-5 py-3 text-sm font-bold text-white backdrop-blur transition hover:-translate-y-0.5 hover:bg-white/10"
+          className="inline-flex min-h-[48px] items-center justify-center gap-1.5 px-1 text-sm font-semibold text-cyan-300 underline decoration-cyan-300/40 underline-offset-4 transition hover:text-cyan-200"
         >
-          View quality system
+          View quality system <span aria-hidden>→</span>
         </a>
       </div>
     </motion.div>

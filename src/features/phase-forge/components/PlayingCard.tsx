@@ -38,7 +38,7 @@ function PlayingCard({ card, isSelected, onClick }: PlayingCardProps) {
         colorMap[card.color]
       } ${isSelected ? "-translate-y-4 ring-2 ring-cyan-300" : "hover:-translate-y-1"}`}
     >
-      <span className="text-xs font-bold uppercase">{card.color}</span>
+      <span className="mt-2 text-center text-xs font-bold uppercase">{card.color}</span>
       <span className="text-center text-3xl font-black">{card.value}</span>
       <span className="text-right text-xs font-bold">{card.value}</span>
     </div>

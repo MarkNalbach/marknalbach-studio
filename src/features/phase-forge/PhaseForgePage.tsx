@@ -1,4 +1,11 @@
-import { DndContext, type DragEndEvent } from "@dnd-kit/core";
+import {
+  DndContext,
+  PointerSensor,
+  TouchSensor,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+} from "@dnd-kit/core";
 import { useEffect, useMemo, useState } from "react";
 import DropZone from "./components/DropZone";
 import PhaseObjective from "./components/PhaseObjective";
@@ -19,6 +26,14 @@ const setSlotIds = [
   "set3-slot2",
   "set3-slot3",
 ];
+
+const CORNER_COLOR: Record<string, string> = {
+    red: "text-[#ff7d7d]",
+    blue: "text-[#7cb3ff]",
+    green: "text-[#5ee08a]",
+    yellow: "text-[#ffd23f]",
+    wild: "text-[#cf9bff]",
+  };
 
 const highScoreStorageKey = "phase-forge-high-score";
 
@@ -43,6 +58,15 @@ function PhaseForgePage() {
     return savedScore ? Number(savedScore) : 0;
   });
   const [setSlots, setSetSlots] = useState<Record<string, GameCard | null>>(createEmptySetSlots());
+
+  // Tap-to-place: which card is currently "picked up"
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+
+  // Activation thresholds let tap (click) and drag coexist without conflict
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
+    useSensor(TouchSensor, { activationConstraint: { delay: 120, tolerance: 8 } })
+  );
 
   const set1Cards = [setSlots["set1-slot1"], setSlots["set1-slot2"], setSlots["set1-slot3"]].filter(
     Boolean
@@ -91,7 +115,7 @@ function PhaseForgePage() {
     if (nextScore <= highScore) {
       return;
     }
-  
+
     setHighScore(nextScore);
     window.localStorage.setItem(highScoreStorageKey, String(nextScore));
   }
@@ -112,6 +136,7 @@ function PhaseForgePage() {
     setScore((current) => Math.max(0, current - 1));
     setMustDiscard(true);
     setStatus("idle");
+    setSelectedId(null);
   }
 
   function newGame() {
@@ -125,82 +150,75 @@ function PhaseForgePage() {
     setStatus("idle");
     setScore(20);
     setSetSlots(createEmptySetSlots());
+    setSelectedId(null);
   }
 
-  function handleDragEnd(event: DragEndEvent) {
-    const { active, over } = event;
-
-    if (!over) {
-      return;
-    }
-
-    const activeId = String(active.id);
-    const overId = String(over.id);
-
-    const cardFromHand = hand.find((card) => card.id === activeId);
-
-    const sourceSlotId = setSlotIds.find((slotId) => setSlots[slotId]?.id === activeId);
+  // Find a card (in hand or in a set slot) and where it came from
+  function resolveCard(cardId: string) {
+    const cardFromHand = hand.find((card) => card.id === cardId);
+    const sourceSlotId = setSlotIds.find((slotId) => setSlots[slotId]?.id === cardId) ?? null;
     const cardFromSlot = sourceSlotId ? setSlots[sourceSlotId] : null;
+    return { card: cardFromHand || cardFromSlot, sourceSlotId };
+  }
 
-    const draggedCard = cardFromHand || cardFromSlot;
-
-    if (!draggedCard) {
-      return;
-    }
+  // Single source of truth for moving a card — used by BOTH drag and tap
+  function applyMove(cardId: string, overId: string) {
+    const { card, sourceSlotId } = resolveCard(cardId);
+    if (!card) return;
 
     if (setSlotIds.includes(overId)) {
       const targetSlotCard = setSlots[overId];
-
-      if (targetSlotCard && overId !== sourceSlotId) {
-        return;
-      }
+      if (targetSlotCard && overId !== sourceSlotId) return;
 
       setSetSlots((current) => ({
         ...current,
         ...(sourceSlotId ? { [sourceSlotId]: null } : {}),
-        [overId]: draggedCard,
+        [overId]: card,
       }));
-
-      if (cardFromHand) {
-        setHand((current) => current.filter((card) => card.id !== activeId));
-      }
-
+      if (!sourceSlotId) setHand((current) => current.filter((c) => c.id !== cardId));
       setStatus("idle");
       return;
     }
 
     if (overId === "discard") {
-      if (!mustDiscard) {
-        return;
-      }
-
-      if (sourceSlotId) {
-        setSetSlots((current) => ({
-          ...current,
-          [sourceSlotId]: null,
-        }));
-      }
-
-      if (cardFromHand) {
-        setHand((current) => current.filter((card) => card.id !== activeId));
-      }
-
-      setDiscardPile((current) => [draggedCard, ...current]);
+      if (!mustDiscard) return;
+      if (sourceSlotId) setSetSlots((current) => ({ ...current, [sourceSlotId]: null }));
+      else setHand((current) => current.filter((c) => c.id !== cardId));
+      setDiscardPile((current) => [card, ...current]);
       setMustDiscard(false);
       setStatus("idle");
       return;
     }
 
-    if (overId === "hand" && cardFromSlot && sourceSlotId) {
-      setSetSlots((current) => ({
-        ...current,
-        [sourceSlotId]: null,
-      }));
-
-      setHand((current) => [...current, draggedCard]);
+    if (overId === "hand" && sourceSlotId) {
+      setSetSlots((current) => ({ ...current, [sourceSlotId]: null }));
+      setHand((current) => [...current, card]);
       setStatus("idle");
     }
   }
+
+  // DRAG path
+  function handleDragEnd(event: DragEndEvent) {
+    const { active, over } = event;
+    if (!over) return;
+    applyMove(String(active.id), String(over.id));
+    setSelectedId(null);
+  }
+
+  // TAP path
+  function handleCardTap(cardId: string) {
+    setSelectedId((current) => (current === cardId ? null : cardId));
+  }
+
+  function handleTargetTap(overId: string) {
+    if (!selectedId) return;
+    applyMove(selectedId, overId);
+    setSelectedId(null);
+  }
+
+  const selectedInfo = selectedId ? resolveCard(selectedId) : null;
+  const handZoneValid = !!selectedInfo?.sourceSlotId;
+  const discardValid = !!selectedId && mustDiscard;
 
   return (
     <main className="min-h-screen bg-[#090b12] text-white">
@@ -223,7 +241,7 @@ function PhaseForgePage() {
           <PhaseObjective />
         </div>
 
-        <DndContext onDragEnd={handleDragEnd}>
+        <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
           <section className="mt-10 rounded-[2rem] border border-white/10 bg-white/[.045] p-6 shadow-2xl">
             <p className="mb-4 text-sm font-bold uppercase tracking-[.2em] text-slate-400">
               Game Table
@@ -264,7 +282,12 @@ function PhaseForgePage() {
                 </div>
               </button>
 
-              <div className={`transition-all ${mustDiscard ? "scale-105 animate-pulse" : ""}`}>
+              <div
+                onClick={() => handleTargetTap("discard")}
+                className={`rounded-2xl transition-all ${
+                  mustDiscard ? "scale-105 animate-pulse" : ""
+                } ${discardValid ? "cursor-pointer ring-2 ring-amber-300/70" : ""}`}
+              >
                 {mustDiscard && (
                   <p className="mb-2 text-center text-xs font-bold uppercase tracking-[.2em] text-amber-300">
                     Discard Required
@@ -341,22 +364,38 @@ function PhaseForgePage() {
                   <div className="flex gap-3">
                     {[1, 2, 3].map((slotNumber) => {
                       const slotId = `${setGroup.name}-slot${slotNumber}`;
+                      const placed = setSlots[slotId];
+                      const valid = !!selectedId && !placed;
 
                       return (
-                        <DropZone
+                        <div
                           key={slotId}
-                          id={slotId}
-                          label={setGroup.label}
-                          isComplete={getSlotCompleteStatus(slotId)}
+                          onClick={() => handleTargetTap(slotId)}
+                          className={`rounded-2xl transition ${
+                            valid ? "cursor-pointer ring-2 ring-cyan-400/70 animate-pulse" : ""
+                          }`}
                         >
-                          {setSlots[slotId] && (
-                            <PlayingCard
-                              card={setSlots[slotId]}
-                              isSelected={false}
-                              onClick={() => {}}
-                            />
-                          )}
-                        </DropZone>
+                          <DropZone
+                            id={slotId}
+                            label={setGroup.label}
+                            isComplete={getSlotCompleteStatus(slotId)}
+                          >
+                            {placed && (
+                              <div
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleCardTap(placed.id);
+                                }}
+                              >
+                                <PlayingCard
+                                  card={placed}
+                                  isSelected={selectedId === placed.id}
+                                  onClick={() => {}}
+                                />
+                              </div>
+                            )}
+                          </DropZone>
+                        </div>
                       );
                     })}
                   </div>
@@ -369,13 +408,48 @@ function PhaseForgePage() {
                 Your Hand
               </p>
 
-              <DropZone id="hand" label="Drop cards back to hand" variant="hand">
-                <div className="flex flex-wrap gap-3">
-                  {hand.map((card) => (
-                    <PlayingCard key={card.id} card={card} isSelected={false} onClick={() => {}} />
-                  ))}
-                </div>
-              </DropZone>
+              <div
+                onClick={() => handleTargetTap("hand")}
+                className={`rounded-2xl transition ${
+                  handZoneValid ? "ring-2 ring-cyan-400/50" : ""
+                }`}
+              >
+                <DropZone id="hand" label="Drop cards back to hand" variant="hand">
+                  {/* overlapping fan — consistent on desktop + mobile */}
+                  <div className="flex items-end overflow-visible pl-1 pt-5">
+                    {hand.map((card, index) => {
+                      const isSel = selectedId === card.id;
+                      // ramps from heavy overlap on phones → no overlap (a gap) on desktop
+                      const spacing = index === 0 ? "" : "-ml-14 sm:-ml-12 md:-ml-8 lg:ml-3";
+
+                      return (
+                        <div
+                          key={card.id}
+                          style={{ zIndex: isSel ? 50 : index }}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleCardTap(card.id);
+                          }}
+                          className={`group relative cursor-pointer transition-transform duration-150 hover:z-50 hover:-translate-y-4 ${spacing} ${
+                            isSel ? "-translate-y-5" : ""
+                          }`}
+                        >
+                          <PlayingCard card={card} isSelected={isSel} onClick={() => {}} />
+
+                          {/* corner index — readable while cards are fanned/overlapping */}
+                          <span
+                            className={`pointer-events-none absolute left-1.5 top-1.5 z-10 font-mono text-sm font-bold leading-none ${
+                              CORNER_COLOR[card.color] ?? "text-white"
+                            }`}
+                          >
+                            {card.value === "wild" ? "★" : card.value}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </DropZone>
+              </div>
             </div>
           </section>
         </DndContext>
