@@ -135,13 +135,6 @@ import {
       }
     }, [kindComplete, runComplete, status]);
   
-    function getSlotCompleteStatus(slotId: string) {
-      if (slotId.startsWith("kind")) return kindComplete;
-      if (slotId.startsWith("run")) return runComplete;
-  
-      return false;
-    }
-  
     function updateHighScore(nextScore: number) {
       if (nextScore <= highScore) return;
   
