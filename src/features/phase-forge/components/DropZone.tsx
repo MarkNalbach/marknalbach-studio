@@ -5,7 +5,7 @@ interface DropZoneProps {
   id: string;
   label: string;
   children?: ReactNode;
-  variant?: "slot" | "hand";
+  variant?: "slot" | "hand" | "group";
   isComplete?: boolean;
 }
 
@@ -23,7 +23,9 @@ function DropZone({
   const sizeClasses =
     variant === "hand"
       ? "min-h-32 w-full p-4"
-      : "flex h-28 w-20 items-center justify-center";
+      : variant === "group"
+        ? "min-h-36 w-full p-2 sm:p-4"
+        : "flex h-28 w-20 items-center justify-center";
 
   return (
     <div

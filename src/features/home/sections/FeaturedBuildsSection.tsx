@@ -1,6 +1,7 @@
 import { useState } from "react";
 import BuildCard from "../components/BuildCard";
 import BuildDetail from "../components/BuildDetail";
+import MobileBuildDetail from "../components/MobileBuildDetail";
 import SectionHeader from "../components/SectionHeader";
 import type { FeaturedBuild } from "../../../types/home";
 
@@ -24,17 +25,30 @@ function FeaturedBuildsSection({ featuredBuilds }: FeaturedBuildsSectionProps) {
       </p>
 
       <div className="mt-10 grid gap-5 lg:grid-cols-3">
-        {featuredBuilds.map((build) => (
-          <BuildCard
-            key={build.title}
-            build={build}
-            isSelected={selectedBuild.title === build.title}
-            onClick={() => setSelectedBuild(build)}
-          />
-        ))}
+        {featuredBuilds.map((build) => {
+          const isSelected = selectedBuild.title === build.title;
+
+          return (
+            <div key={build.title} className="min-w-0 overflow-hidden">
+              <BuildCard
+                build={build}
+                isSelected={isSelected}
+                onClick={() => setSelectedBuild(build)}
+              />
+
+              {isSelected && (
+                <div className="relative z-10 mt-4 block lg:hidden">
+                  <MobileBuildDetail build={build} />
+                </div>
+              )}
+            </div>
+          );
+        })}
       </div>
 
-      <BuildDetail build={selectedBuild} />
+      <div className="hidden lg:block">
+        <BuildDetail build={selectedBuild} />
+      </div>
     </section>
   );
 }

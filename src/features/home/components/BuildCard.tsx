@@ -14,7 +14,7 @@ function BuildCard({ build, isSelected, onClick }: BuildCardProps) {
     <button
       onClick={onClick}
       aria-pressed={isSelected}
-      className={`group flex h-full cursor-pointer flex-col rounded-[1.75rem] border border-l-[3px] p-5 text-left shadow-xl transition ${
+      className={`group flex cursor-pointer flex-col rounded-[1.75rem] border border-l-[3px] p-5 text-left shadow-xl transition lg:h-full ${
         isSelected
           ? "border-cyan-300 border-l-cyan-300 bg-cyan-300/15 shadow-cyan-950/30 ring-2 ring-cyan-300/30"
           : "border-white/10 border-l-white/10 bg-white/[.055] hover:-translate-y-1 hover:border-cyan-300/30 hover:border-l-cyan-300/60 hover:bg-white/[.08]"

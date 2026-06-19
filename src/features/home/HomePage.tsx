@@ -123,6 +123,12 @@ function HomePage() {
   }
 
   useEffect(() => {
+    if (!window.location.hash) {
+      window.scrollTo(0, 0);
+    }
+  }, []);
+
+  useEffect(() => {
     if (consoleMode === "commands") {
       setInput("help");
       setTerminalHistory([
