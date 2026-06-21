@@ -40,13 +40,7 @@ import {
     },
   ];
   
-  const CORNER_COLOR: Record<string, string> = {
-    red: "text-[#ff7d7d]",
-    blue: "text-[#7cb3ff]",
-    green: "text-[#5ee08a]",
-    yellow: "text-[#ffd23f]",
-    wild: "text-[#cf9bff]",
-  };
+
   
   const highScoreStorageKey = "phase-forge-high-score";
   
