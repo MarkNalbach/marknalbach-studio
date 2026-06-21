@@ -21,11 +21,13 @@ function PlayingCard({ card, isSelected, onClick }: PlayingCardProps) {
   });
 
   const style = transform
-  ? {
-      transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
-      willChange: "transform",
-    }
-  : undefined;
+    ? {
+        transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
+        willChange: "transform",
+      }
+    : undefined;
+
+  const displayValue = card.value === "wild" ? "★" : card.value;
 
   return (
     <div
@@ -34,13 +36,19 @@ function PlayingCard({ card, isSelected, onClick }: PlayingCardProps) {
       {...listeners}
       {...attributes}
       onClick={onClick}
-      className={`flex h-28 w-20 cursor-grab touch-none flex-col justify-between rounded-xl border-2 bg-slate-950 p-3 shadow-lg active:cursor-grabbing ${
+      className={`relative flex h-28 w-20 cursor-grab touch-none flex-col justify-between rounded-xl border-2 bg-slate-950 p-3 shadow-lg active:cursor-grabbing ${
         colorMap[card.color]
       } ${isSelected ? "-translate-y-4 ring-2 ring-cyan-300" : "hover:-translate-y-1"}`}
     >
-      <span className="mt-2 text-center text-xs font-bold uppercase">{card.color}</span>
-      <span className="text-center text-3xl font-black">{card.value}</span>
-      <span className="text-right text-xs font-bold">{card.value}</span>
+      <span className="absolute left-2 top-2 font-mono text-sm font-black leading-none">
+        {displayValue}
+      </span>
+
+      <span className="mt-4 text-center text-xs font-bold uppercase">{card.color}</span>
+
+      <span className="text-center text-3xl font-black">{displayValue}</span>
+
+      <span className="text-right text-xs font-bold">{displayValue}</span>
     </div>
   );
 }

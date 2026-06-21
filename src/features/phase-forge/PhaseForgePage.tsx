@@ -412,7 +412,7 @@ import {
                         }`}
                       >
                         <DropZone id={group.id} label={group.label} variant="group" isComplete={isComplete}>
-                        <div className="flex min-h-36 w-full items-center overflow-visible px-2 py-4 sm:px-5">
+                        <div className="flex min-h-36 w-full items-center overflow-hidden px-2 py-4 sm:px-5">
                             {cards.length === 0 ? (
                               <p className="w-full text-center text-sm text-slate-500">
                                 Drop cards here
@@ -481,13 +481,7 @@ import {
                           >
                             <PlayingCard card={card} isSelected={isSel} onClick={() => {}} />
   
-                            <span
-                              className={`pointer-events-none absolute left-1.5 top-1.5 z-10 font-mono text-sm font-bold leading-none ${
-                                CORNER_COLOR[card.color] ?? "text-white"
-                              }`}
-                            >
-                              {card.value === "wild" ? "★" : card.value}
-                            </span>
+                            
                           </div>
                         );
                       })}
