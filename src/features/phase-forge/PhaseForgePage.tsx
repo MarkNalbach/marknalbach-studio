@@ -5,7 +5,6 @@ import {
   TouchSensor,
   useSensor,
   useSensors,
-  closestCenter,
   rectIntersection,
   type DragEndEvent,
   type DragStartEvent,
