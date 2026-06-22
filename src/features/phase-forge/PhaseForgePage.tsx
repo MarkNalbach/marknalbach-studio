@@ -1,10 +1,14 @@
 import {
   DndContext,
+  DragOverlay,
   PointerSensor,
   TouchSensor,
   useSensor,
   useSensors,
+  closestCenter,
+  rectIntersection,
   type DragEndEvent,
+  type DragStartEvent,
 } from "@dnd-kit/core";
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
@@ -87,6 +91,13 @@ function getNextOpenSlot(slots: Record<string, GameCard | null>, slotIds: string
   return slotIds.find((slotId) => !slots[slotId]) ?? null;
 }
 
+function moveArrayItem<T>(items: T[], fromIndex: number, toIndex: number) {
+  const nextItems = [...items];
+  const [movedItem] = nextItems.splice(fromIndex, 1);
+  nextItems.splice(toIndex, 0, movedItem);
+  return nextItems;
+}
+
 function PhaseForgePage() {
   const initialGame = useMemo(() => {
     const deck = createDeck();
@@ -106,6 +117,7 @@ function PhaseForgePage() {
   const [setSlots, setSetSlots] = useState<Record<string, GameCard | null>>(createEmptySetSlots());
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [showWinOverlay, setShowWinOverlay] = useState(false);
+  const [activeDragId, setActiveDragId] = useState<string | null>(null);
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
@@ -130,6 +142,10 @@ function PhaseForgePage() {
       });
     }
   }, [kindComplete, runComplete, status]);
+
+  function handleDragStart(event: DragStartEvent) {
+    setActiveDragId(String(event.active.id));
+  }
 
   function updateHighScore(nextScore: number) {
     if (nextScore <= highScore) return;
@@ -239,11 +255,92 @@ function PhaseForgePage() {
     }
   }
 
+  function handleCardReorder(activeId: string, overId: string) {
+    const activeHandIndex = hand.findIndex((card) => card.id === activeId);
+    const overHandIndex = hand.findIndex((card) => card.id === overId);
+
+    if (activeHandIndex !== -1 && overHandIndex !== -1) {
+      setHand((current) => {
+        const oldIndex = current.findIndex((card) => card.id === activeId);
+        const newIndex = current.findIndex((card) => card.id === overId);
+
+        if (oldIndex === -1 || newIndex === -1) return current;
+
+        return moveArrayItem(current, oldIndex, newIndex);
+      });
+
+      return true;
+    }
+
+    const activeSlotId = setSlotIds.find((slotId) => setSlots[slotId]?.id === activeId);
+    const overSlotId = setSlotIds.find((slotId) => setSlots[slotId]?.id === overId);
+
+    if (activeSlotId && overSlotId) {
+      const activeGroup = phaseGroups.find((group) => group.slotIds.includes(activeSlotId));
+      const overGroup = phaseGroups.find((group) => group.slotIds.includes(overSlotId));
+
+      if (!activeGroup || !overGroup || activeGroup.id !== overGroup.id) {
+        return false;
+      }
+
+      setSetSlots((current) => {
+        const cards = getCardsForSlots(current, activeGroup.slotIds);
+        const oldIndex = cards.findIndex((card) => card.id === activeId);
+        const newIndex = cards.findIndex((card) => card.id === overId);
+
+        if (oldIndex === -1 || newIndex === -1) return current;
+
+        const reorderedCards = moveArrayItem(cards, oldIndex, newIndex);
+
+        return {
+          ...current,
+          ...Object.fromEntries(
+            activeGroup.slotIds.map((slotId, index) => [slotId, reorderedCards[index] ?? null])
+          ),
+        };
+      });
+
+      return true;
+    }
+
+    return false;
+  }
+
+  function isCardInHand(cardId: string) {
+    return hand.some((card) => card.id === cardId);
+  }
+
+  function getDropZoneIdForCard(cardId: string) {
+    const slotId = setSlotIds.find((id) => setSlots[id]?.id === cardId);
+
+    if (!slotId) return null;
+
+    const group = phaseGroups.find((phaseGroup) => phaseGroup.slotIds.includes(slotId));
+
+    return group?.id ?? null;
+  }
+
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
+  
+    setActiveDragId(null);
+  
     if (!over) return;
-
-    applyMove(String(active.id), String(over.id));
+  
+    const activeId = String(active.id);
+    const overId = String(over.id);
+  
+    if (handleCardReorder(activeId, overId)) {
+      setSelectedId(null);
+      return;
+    }
+  
+    const activeInfo = resolveCard(activeId);
+    const overZoneId =
+      getDropZoneIdForCard(overId) ??
+      (activeInfo.sourceSlotId && isCardInHand(overId) ? "hand" : overId);
+  
+    applyMove(activeId, overZoneId);
     setSelectedId(null);
   }
 
@@ -342,7 +439,12 @@ function PhaseForgePage() {
           <PhaseObjective />
         </div>
 
-        <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
+        <DndContext
+          sensors={sensors}
+          collisionDetection={rectIntersection}
+          onDragStart={handleDragStart}
+          onDragEnd={handleDragEnd}
+        >
           <section className="mt-10 rounded-[2rem] border border-white/10 bg-white/[.045] p-4 shadow-2xl sm:p-6">
             <p className="mb-4 text-sm font-bold uppercase tracking-[.2em] text-slate-400">
               Game Table
@@ -545,6 +647,18 @@ function PhaseForgePage() {
               </div>
             </div>
           </section>
+          <DragOverlay>
+            {activeDragId ? (
+              <div className="scale-105">
+                <PlayingCard
+                  card={resolveCard(activeDragId).card!}
+                  isSelected={false}
+                  onClick={() => {}}
+                  isDragOverlay
+                />
+              </div>
+            ) : null}
+          </DragOverlay>
         </DndContext>
       </div>
     </main>

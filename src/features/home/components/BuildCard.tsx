@@ -46,7 +46,13 @@ function BuildCard({ build, isSelected, onClick }: BuildCardProps) {
             isSelected ? "text-cyan-200" : "text-cyan-300"
           }`}
         >
-          {isSelected ? "Hide breakdown" : "View breakdown"}
+          {build.title === "Phase Forge"
+            ? isSelected
+              ? "Hide breakdown"
+              : "View breakdown & play"
+            : isSelected
+              ? "Hide breakdown"
+              : "View breakdown"}
           <ChevronRight
             className={`h-4 w-4 transition ${
               isSelected ? "rotate-90 translate-x-0.5" : "group-hover:translate-x-0.5"

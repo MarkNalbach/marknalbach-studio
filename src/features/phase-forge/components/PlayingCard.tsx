@@ -1,7 +1,8 @@
-import { useDraggable } from "@dnd-kit/core";
+import { useDraggable, useDroppable } from "@dnd-kit/core";
 import type { GameCard } from "../game/types";
 
 interface PlayingCardProps {
+  isDragOverlay?: boolean;
   card: GameCard;
   isSelected: boolean;
   onClick: () => void;
@@ -15,17 +16,32 @@ const colorMap = {
   wild: "border-purple-400 text-purple-300",
 };
 
-function PlayingCard({ card, isSelected, onClick }: PlayingCardProps) {
-  const { attributes, listeners, setNodeRef, transform } = useDraggable({
+function PlayingCard({ card, isSelected, onClick, isDragOverlay = false }: PlayingCardProps) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef: setDraggableNodeRef,
+    transform,
+    isDragging,
+  } = useDraggable({
     id: card.id,
+    disabled: isDragOverlay,
   });
+
+  const { setNodeRef: setDroppableNodeRef } = useDroppable({
+    id: card.id,
+    disabled: isDragOverlay,
+  });
+
+  function setNodeRef(node: HTMLElement | null) {
+    setDraggableNodeRef(node);
+    setDroppableNodeRef(node);
+  }
 
   const style = transform
     ? {
         transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
         willChange: "transform",
-        zIndex: 9999,
-        position: "relative" as const,
       }
     : undefined;
 
@@ -40,16 +56,20 @@ function PlayingCard({ card, isSelected, onClick }: PlayingCardProps) {
       onClick={onClick}
       className={`relative flex h-28 w-20 cursor-grab touch-none flex-col justify-between rounded-xl border-2 bg-slate-950 p-3 shadow-lg active:cursor-grabbing ${
         colorMap[card.color]
-      } ${isSelected ? "-translate-y-4 ring-2 ring-cyan-300" : "hover:-translate-y-1"}`}
+      } ${
+        isDragging
+          ? "opacity-0"
+          : isSelected
+            ? "-translate-y-4 ring-2 ring-cyan-300"
+            : "hover:-translate-y-1"
+      }`}
     >
       <span className="absolute left-2 top-2 font-mono text-sm font-black leading-none">
         {displayValue}
       </span>
 
       <span className="mt-4 text-center text-xs font-bold uppercase">{card.color}</span>
-
       <span className="text-center text-3xl font-black">{displayValue}</span>
-
       <span className="text-right text-xs font-bold">{displayValue}</span>
     </div>
   );
