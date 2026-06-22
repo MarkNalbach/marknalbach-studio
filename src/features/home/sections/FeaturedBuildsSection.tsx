@@ -9,7 +9,23 @@ interface FeaturedBuildsSectionProps {
 }
 
 function FeaturedBuildsSection({ featuredBuilds }: FeaturedBuildsSectionProps) {
-  const [selectedBuild, setSelectedBuild] = useState(featuredBuilds[0]);
+  const [openBuildTitles, setOpenBuildTitles] = useState<string[]>([featuredBuilds[0].title]);
+  const desktopBuild =
+    featuredBuilds.find((build) => openBuildTitles.includes(build.title)) ?? featuredBuilds[0];
+
+  function handleToggleBuild(build: FeaturedBuild) {
+    const scrollY = window.scrollY;
+
+    setOpenBuildTitles((current) =>
+      current.includes(build.title)
+        ? current.filter((title) => title !== build.title)
+        : [...current, build.title]
+    );
+
+    requestAnimationFrame(() => {
+      window.scrollTo({ top: scrollY });
+    });
+  }
 
   return (
     <section id="builds" className="relative mx-auto max-w-7xl px-6 py-16 lg:px-8">
@@ -20,7 +36,7 @@ function FeaturedBuildsSection({ featuredBuilds }: FeaturedBuildsSectionProps) {
       />
 
       <p className="mt-6 text-sm font-medium text-cyan-200">
-        Select a project card for additional details.
+        Select a project card to expand or close the details.
       </p>
 
       <div className="mt-10 grid items-start gap-5 lg:grid-cols-3">
@@ -28,14 +44,14 @@ function FeaturedBuildsSection({ featuredBuilds }: FeaturedBuildsSectionProps) {
           <BuildCard
             key={build.title}
             build={build}
-            isSelected={selectedBuild.title === build.title}
-            onClick={() => setSelectedBuild(build)}
+            isSelected={openBuildTitles.includes(build.title)}
+            onClick={() => handleToggleBuild(build)}
           />
         ))}
       </div>
 
       <div className="hidden lg:block">
-        <BuildDetail build={selectedBuild} />
+        <BuildDetail build={desktopBuild} />
       </div>
     </section>
   );

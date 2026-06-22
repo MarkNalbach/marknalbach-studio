@@ -5,6 +5,7 @@ import brewShot1 from "../../../assets/projects/us-brew-passport/usbrewpassport-
 import pottyPalShot1 from "../../../assets/projects/potty-pal/pottypal-screen-1.png";
 import appStoreBadge from "../../../assets/projects/us-brew-passport/app-store-badge.png";
 import googlePlayBadge from "../../../assets/projects/us-brew-passport/google-play-badge.png";
+import { AnimatePresence, motion } from "framer-motion";
 
 interface BuildCardProps {
   build: FeaturedBuild;
@@ -38,9 +39,7 @@ function BuildCard({ build, isSelected, onClick }: BuildCardProps) {
 
         <p className="mt-3 leading-7 text-slate-300">{build.summary}</p>
 
-        <p className="mt-4 text-xs leading-6 text-slate-500">
-          {build.highlights.join("  ·  ")}
-        </p>
+        <p className="mt-4 text-xs leading-6 text-slate-500">{build.highlights.join("  ·  ")}</p>
 
         <span
           className={`mt-5 inline-flex items-center gap-1.5 text-sm font-semibold ${
@@ -56,71 +55,81 @@ function BuildCard({ build, isSelected, onClick }: BuildCardProps) {
         </span>
       </button>
 
-      {isSelected && (
-        <div className="mt-5 border-t border-cyan-300/20 pt-5 lg:hidden">
-          <p className="text-xs font-bold uppercase tracking-[.2em] text-emerald-300">
-            Mobile Breakdown
-          </p>
-
-          <div className="mt-4 space-y-3">
-            {build.highlights.map((highlight) => (
-              <div key={highlight} className="flex items-center gap-2 text-sm text-slate-300">
-                <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-300" />
-                <span>{highlight}</span>
-              </div>
-            ))}
-          </div>
-
-          {build.title === "US Brew Passport" && (
-            <div className="mt-5 rounded-2xl border border-white/10 bg-slate-950/70 p-4">
-              <img
-                src={brewShot1}
-                alt="US Brew Passport app screenshot"
-                className="mx-auto max-h-[420px] rounded-2xl object-contain"
-              />
-
-              <p className="mt-4 text-sm leading-6 text-slate-400">
-                Location-aware brewery discovery, QR-based reward redemption, and a simple mobile
-                flow designed for customers and brewery staff.
+      <AnimatePresence initial={false}>
+        {isSelected && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.25, ease: "easeInOut" }}
+            className="overflow-hidden lg:hidden"
+          >
+            <div className="mt-5 border-t border-cyan-300/20 pt-5">
+              <p className="text-xs font-bold uppercase tracking-[.2em] text-emerald-300">
+                Mobile Breakdown
               </p>
 
-              <div className="mt-4 flex flex-wrap gap-3">
-                <a href="https://apps.apple.com/us/app/us-brew-passport/id6756192953">
-                  <img src={appStoreBadge} alt="Download on the App Store" className="h-10" />
-                </a>
-
-                <a href="https://play.google.com/store/apps/details?id=com.usbrewerypassport.app">
-                  <img src={googlePlayBadge} alt="Get it on Google Play" className="h-10" />
-                </a>
+              <div className="mt-4 space-y-3">
+                {build.highlights.map((highlight) => (
+                  <div key={highlight} className="flex items-center gap-2 text-sm text-slate-300">
+                    <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-300" />
+                    <span>{highlight}</span>
+                  </div>
+                ))}
               </div>
+
+              {build.title === "US Brew Passport" && (
+                <div className="mt-5 rounded-2xl border border-white/10 bg-slate-950/70 p-4">
+                  <img
+                    src={brewShot1}
+                    alt="US Brew Passport app screenshot"
+                    className="mx-auto max-h-[420px] rounded-2xl object-contain"
+                  />
+
+                  <p className="mt-4 text-sm leading-6 text-slate-400">
+                    Location-aware brewery discovery, QR-based reward redemption, and a simple
+                    mobile flow designed for customers and brewery staff.
+                  </p>
+
+                  <div className="mt-4 flex flex-wrap gap-3">
+                    <a href="https://apps.apple.com/us/app/us-brew-passport/id6756192953">
+                      <img src={appStoreBadge} alt="Download on the App Store" className="h-10" />
+                    </a>
+
+                    <a href="https://play.google.com/store/apps/details?id=com.usbrewerypassport.app">
+                      <img src={googlePlayBadge} alt="Get it on Google Play" className="h-10" />
+                    </a>
+                  </div>
+                </div>
+              )}
+
+              {build.title === "Potty Pal" && (
+                <div className="mt-5 rounded-2xl border border-white/10 bg-slate-950/70 p-4">
+                  <img
+                    src={pottyPalShot1}
+                    alt="Potty Pal app screenshot"
+                    className="mx-auto max-h-[420px] rounded-2xl object-contain"
+                  />
+
+                  <p className="mt-4 text-sm leading-6 text-slate-400">
+                    A mobile-first map experience for finding, reviewing, and sharing public
+                    restroom locations.
+                  </p>
+                </div>
+              )}
+
+              {build.title === "Phase Forge" && (
+                <a
+                  href="/phase-forge"
+                  className="mt-5 inline-flex rounded-xl bg-cyan-300 px-4 py-2 text-sm font-bold text-slate-950 shadow-lg shadow-cyan-950/30 transition hover:-translate-y-0.5 hover:bg-cyan-200"
+                >
+                  Play Phase Forge
+                </a>
+              )}
             </div>
-          )}
-
-          {build.title === "Potty Pal" && (
-            <div className="mt-5 rounded-2xl border border-white/10 bg-slate-950/70 p-4">
-              <img
-                src={pottyPalShot1}
-                alt="Potty Pal app screenshot"
-                className="mx-auto max-h-[420px] rounded-2xl object-contain"
-              />
-
-              <p className="mt-4 text-sm leading-6 text-slate-400">
-                A mobile-first map experience for finding, reviewing, and sharing public restroom
-                locations.
-              </p>
-            </div>
-          )}
-
-          {build.title === "Phase Forge" && (
-            <a
-              href="/phase-forge"
-              className="mt-5 inline-flex rounded-xl bg-cyan-300 px-4 py-2 text-sm font-bold text-slate-950 shadow-lg shadow-cyan-950/30 transition hover:-translate-y-0.5 hover:bg-cyan-200"
-            >
-              Play Phase Forge
-            </a>
-          )}
-        </div>
-      )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </article>
   );
 }

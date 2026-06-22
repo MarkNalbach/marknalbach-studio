@@ -24,6 +24,8 @@ function PlayingCard({ card, isSelected, onClick }: PlayingCardProps) {
     ? {
         transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
         willChange: "transform",
+        zIndex: 9999,
+        position: "relative" as const,
       }
     : undefined;
 
