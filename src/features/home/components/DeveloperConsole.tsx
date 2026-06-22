@@ -309,7 +309,7 @@ function DeveloperConsole({
 
           {consoleMode === "local-ai" && (
             <div className="rounded-2xl border border-amber-300/15 bg-amber-300/10 p-3 text-xs text-amber-100">
-              Local AI mode is planned for a future release using an in-browser model.
+              Ask a question about Mark's experience, projects, skills, or technical decisions.
             </div>
           )}
 

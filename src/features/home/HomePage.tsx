@@ -9,6 +9,8 @@ import DeveloperMindsetSection from "./sections/DeveloperMindsetSection";
 import HeroConsoleSection from "./sections/HeroConsoleSection";
 import { searchPortfolioKnowledge } from "../../utils/searchPortfolioKnowledge";
 import AboutMarkSection from "./sections/AboutMarkSection";
+import { askLocalAi, loadLocalAi, supportsLocalAi } from "../../utils/localAi";
+import { localAiKnowledge } from "../../content/localAiKnowledge";
 import {
   featuredBuilds,
   mindsetCards,
@@ -24,10 +26,14 @@ export interface TerminalHistoryItem {
 
 type ConsoleMode = "commands" | "portfolio-ai" | "local-ai";
 
+// const portfolioContext =
+//   "Mark Nalbach is a frontend engineer with 10 years at EverFi, 5 years at Workplace Answers, and prior experience in video, animation, and effects. His projects include US Brew Passport, Potty Pal, Phase Forge, Cypress automation, React, React Native, Expo, Firebase, TypeScript, and AI UX.";
+
 function HomePage() {
   const [consoleMode, setConsoleMode] = useState<ConsoleMode>("commands");
   const [input, setInput] = useState<string>("help");
   const [isThinking, setIsThinking] = useState(false);
+  const [isLocalAiLoaded, setIsLocalAiLoaded] = useState(false);
   const [terminalHistory, setTerminalHistory] = useState<TerminalHistoryItem[]>([
     {
       command: "help",
@@ -46,7 +52,7 @@ function HomePage() {
     ];
   }
 
-  function runTerminalCommand(command: string) {
+  async function runTerminalCommand(command: string) {
     const normalized = command.trim().toLowerCase() || "help";
 
     if (normalized === "clear") {
@@ -57,15 +63,20 @@ function HomePage() {
 
     if (consoleMode === "commands") {
       setInput(normalized);
+      setTerminalHistory((current) => [
+        ...current,
+        {
+          command: normalized,
+          lines: getCommandLines(normalized),
+        },
+      ]);
+      return;
     }
 
     if (consoleMode === "portfolio-ai") {
       setInput("");
-    }
-
-    if (consoleMode === "portfolio-ai") {
       setIsThinking(true);
-    
+
       setTerminalHistory((current) => [
         ...current,
         {
@@ -73,7 +84,7 @@ function HomePage() {
           lines: ["Portfolio AI is thinking..."],
         },
       ]);
-    
+
       window.setTimeout(() => {
         setTerminalHistory((current) => [
           ...current.slice(0, -1),
@@ -82,35 +93,88 @@ function HomePage() {
             lines: searchPortfolioKnowledge(normalized),
           },
         ]);
-    
+
         setIsThinking(false);
       }, 1500);
-    
+
       return;
     }
 
     if (consoleMode === "local-ai") {
-      setTerminalHistory((current) => [
-        ...current,
-        {
-          command: normalized,
-          lines: [
-            "Local AI mode is experimental.",
-            "Planned implementation: browser-based model running on-device.",
-            "For now, switch to Portfolio AI for curated portfolio answers.",
-          ],
-        },
-      ]);
+      setInput("");
+      setIsThinking(true);
+
+      try {
+        const hasWebGpu = await supportsLocalAi();
+
+        if (!hasWebGpu) {
+          setTerminalHistory((current) => [
+            ...current,
+            {
+              command: normalized,
+              lines: [
+                "Local AI is not available in this browser.",
+                "This feature requires WebGPU support.",
+                "Try Chrome or Edge on a device with WebGPU enabled.",
+              ],
+            },
+          ]);
+          return;
+        }
+
+        if (!isLocalAiLoaded) {
+          setTerminalHistory((current) => [
+            ...current,
+            {
+              command: normalized,
+              lines: ["Loading Local AI model...", "First load may take a little while."],
+            },
+          ]);
+
+          await loadLocalAi((message) => {
+            setTerminalHistory((current) => [
+              ...current.slice(0, -1),
+              {
+                command: normalized,
+                lines: ["Loading Local AI model...", message],
+              },
+            ]);
+          });
+
+          setIsLocalAiLoaded(true);
+        }
+
+        const searchContext = searchPortfolioKnowledge(normalized).join("\n");
+
+        const relevantContext = searchContext.trim().length > 80 ? searchContext : localAiKnowledge;
+
+        const answer = await askLocalAi(normalized, relevantContext);
+
+        setTerminalHistory((current) => [
+          ...current.filter((item) => !item.lines.includes("Loading Local AI model...")),
+          {
+            command: normalized,
+            lines: answer.split("\n"),
+          },
+        ]);
+      } catch {
+        setTerminalHistory((current) => [
+          ...current.filter((item) => !item.lines.includes("Loading Local AI model...")),
+          {
+            command: normalized,
+            lines: [
+              "Local AI could not finish loading or responding.",
+              "This can happen if the browser, GPU, or model download is not supported.",
+              "Portfolio AI is still available as the reliable fallback.",
+            ],
+          },
+        ]);
+      } finally {
+        setIsThinking(false);
+      }
+
       return;
     }
-
-    setTerminalHistory((current) => [
-      ...current,
-      {
-        command: normalized,
-        lines: getCommandLines(normalized),
-      },
-    ]);
   }
 
   function runCommand(event: React.SyntheticEvent<HTMLFormElement>) {
@@ -161,11 +225,12 @@ function HomePage() {
         {
           command: "local-ai",
           lines: [
-            "Local AI Experimental Mode",
+            "Local AI Mode",
             "",
-            "Planned implementation: browser-based AI running entirely on-device.",
+            "This runs an AI model directly in your browser using WebGPU.",
+            "No API key. No server request. No token cost.",
             "",
-            "For now, use Portfolio AI for curated project answers.",
+            "First load may take a little while.",
           ],
         },
       ]);
