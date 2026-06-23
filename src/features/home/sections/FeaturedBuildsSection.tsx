@@ -9,22 +9,22 @@ interface FeaturedBuildsSectionProps {
 }
 
 function FeaturedBuildsSection({ featuredBuilds }: FeaturedBuildsSectionProps) {
-  const [openBuildTitles, setOpenBuildTitles] = useState<string[]>([featuredBuilds[0].title]);
-  const desktopBuild =
-    featuredBuilds.find((build) => openBuildTitles.includes(build.title)) ?? featuredBuilds[0];
+  const [selectedBuild, setSelectedBuild] = useState(featuredBuilds[0]);
+  const [openBuildTitles, setOpenBuildTitles] = useState<string[]>([]);
 
-  function handleToggleBuild(build: FeaturedBuild) {
-    const scrollY = window.scrollY;
+  function handleBuildClick(build: FeaturedBuild) {
+    const isDesktop = window.matchMedia("(min-width: 1024px)").matches;
+
+    if (isDesktop) {
+      setSelectedBuild(build);
+      return;
+    }
 
     setOpenBuildTitles((current) =>
       current.includes(build.title)
         ? current.filter((title) => title !== build.title)
         : [...current, build.title]
     );
-
-    requestAnimationFrame(() => {
-      window.scrollTo({ top: scrollY });
-    });
   }
 
   return (
@@ -44,14 +44,17 @@ function FeaturedBuildsSection({ featuredBuilds }: FeaturedBuildsSectionProps) {
           <BuildCard
             key={build.title}
             build={build}
-            isSelected={openBuildTitles.includes(build.title)}
-            onClick={() => handleToggleBuild(build)}
+            isSelected={
+              selectedBuild.title === build.title || openBuildTitles.includes(build.title)
+            }
+            isMobileOpen={openBuildTitles.includes(build.title)}
+            onClick={() => handleBuildClick(build)}
           />
         ))}
       </div>
 
       <div className="hidden lg:block">
-        <BuildDetail build={desktopBuild} />
+        <BuildDetail build={selectedBuild} />
       </div>
     </section>
   );

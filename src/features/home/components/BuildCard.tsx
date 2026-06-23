@@ -10,10 +10,11 @@ import { AnimatePresence, motion } from "framer-motion";
 interface BuildCardProps {
   build: FeaturedBuild;
   isSelected: boolean;
+  isMobileOpen?: boolean;
   onClick: () => void;
 }
 
-function BuildCard({ build, isSelected, onClick }: BuildCardProps) {
+function BuildCard({ build, isSelected, isMobileOpen = false, onClick }: BuildCardProps) {
   const Icon = build.icon;
 
   return (
@@ -24,7 +25,7 @@ function BuildCard({ build, isSelected, onClick }: BuildCardProps) {
           : "border-white/10 border-l-white/10 bg-white/[.055] hover:-translate-y-1 hover:border-cyan-300/30 hover:border-l-cyan-300/60 hover:bg-white/[.08]"
       }`}
     >
-      <button type="button" onClick={onClick} aria-expanded={isSelected} className="text-left">
+      <button type="button" onClick={onClick} aria-expanded={isMobileOpen} className="cursor-pointer text-left">
         <div className="mb-5 flex items-start justify-between gap-4">
           <div className="rounded-2xl bg-white/10 p-3 ring-1 ring-white/10">
             <Icon className="h-6 w-6 text-cyan-200" />
@@ -46,23 +47,30 @@ function BuildCard({ build, isSelected, onClick }: BuildCardProps) {
             isSelected ? "text-cyan-200" : "text-cyan-300"
           }`}
         >
-          {build.title === "Phase Forge"
-            ? isSelected
-              ? "Hide breakdown"
-              : "View breakdown & play"
-            : isSelected
-              ? "Hide breakdown"
-              : "View breakdown"}
+          <span className="lg:hidden">
+            {build.title === "Phase Forge"
+              ? isMobileOpen
+                ? "Hide breakdown"
+                : "View breakdown & Play game"
+              : isMobileOpen
+                ? "Hide breakdown"
+                : "View breakdown"}
+          </span>
+
+          <span className="hidden lg:inline">
+            {build.title === "Phase Forge" ? "View breakdown & play" : "View breakdown"}
+          </span>
+
           <ChevronRight
             className={`h-4 w-4 transition ${
-              isSelected ? "rotate-90 translate-x-0.5" : "group-hover:translate-x-0.5"
+              isMobileOpen ? "rotate-90 translate-x-0.5 lg:rotate-0" : "group-hover:translate-x-0.5"
             }`}
           />
         </span>
       </button>
 
       <AnimatePresence initial={false}>
-        {isSelected && (
+        {isMobileOpen && (
           <motion.div
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
