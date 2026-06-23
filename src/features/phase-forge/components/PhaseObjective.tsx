@@ -6,7 +6,7 @@ function PhaseObjective() {
       <h2 className="mt-3 text-2xl font-black text-white">Phase 1</h2>
 
       <p className="mt-2 text-slate-300">
-        Create three sets of three cards. Each set can be a matching set (3-3-3) or a run (1-2-3).
+        Create two sets of four cards. Each set can be a matching set (3-3-3-3) or a run (1-2-3-4).
       </p>
 
       <p className="mt-3 text-sm leading-6 text-slate-400">
