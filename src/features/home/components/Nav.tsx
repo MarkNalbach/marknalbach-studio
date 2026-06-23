@@ -1,4 +1,4 @@
-import { Cpu, Menu, X } from "lucide-react";
+import { Cpu, Menu, X, Download } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -16,9 +16,7 @@ function Nav() {
           </div>
 
           <Link to="/" onClick={closeMenu}>
-            <p className="text-sm font-semibold tracking-wide text-white">
-              Mark Nalbach
-            </p>
+            <p className="text-sm font-semibold tracking-wide text-white">Mark Nalbach</p>
             <p className="text-xs text-slate-400">Frontend Engineer</p>
           </Link>
         </div>
@@ -39,6 +37,14 @@ function Nav() {
             </a>
             <a href="/#mindset" className="hover:text-white">
               Mindset
+            </a>
+            <a
+              href="/mark-nalbach-resume.pdf"
+              download
+              className="inline-flex items-center gap-1.5 rounded-xl border border-cyan-300/20 bg-cyan-300/5 px-3 py-2 font-semibold text-cyan-100 transition hover:-translate-y-0.5 hover:border-cyan-300/40 hover:bg-cyan-300/10"
+            >
+              Resume
+              <Download className="h-4 w-4" />
             </a>
           </nav>
 
@@ -113,6 +119,15 @@ function Nav() {
               className="rounded-xl px-3 py-2 hover:bg-white/[.06] hover:text-white"
             >
               Mindset
+            </a>
+            <a
+              href="/mark-nalbach-resume.pdf"
+              download
+              onClick={closeMenu}
+              className="inline-flex items-center justify-between rounded-xl px-3 py-2 font-semibold text-cyan-100 hover:bg-white/[.06]"
+            >
+              Resume
+              <Download className="h-4 w-4" />
             </a>
           </nav>
 

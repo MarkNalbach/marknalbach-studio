@@ -257,13 +257,19 @@ function DeveloperConsole({
                 key={mode.id}
                 type="button"
                 onClick={() => setConsoleMode(mode.id as ConsoleMode)}
-                className={`min-h-[44px] rounded-xl px-3 font-bold transition ${
+                className={`cursor-pointer min-h-[44px] rounded-xl px-3 font-bold transition-all duration-300 ${
                   consoleMode === mode.id
                     ? "bg-cyan-300 text-slate-950 shadow-lg shadow-cyan-300/25"
-                    : "text-slate-400 hover:bg-white/5 hover:text-white"
+                    : "text-slate-400 hover:-translate-y-0.5 hover:bg-white/5 hover:text-white hover:shadow-lg hover:shadow-cyan-300/10"
                 }`}
               >
-                {mode.label}
+                <span className="flex items-center gap-2">
+                  {mode.label}
+
+                  {consoleMode !== mode.id && (
+                    <span className="h-2 w-2 animate-pulse rounded-full bg-cyan-300" />
+                  )}
+                </span>
               </button>
             ))}
           </div>

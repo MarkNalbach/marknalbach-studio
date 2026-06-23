@@ -31,15 +31,10 @@ type ConsoleMode = "commands" | "portfolio-ai" | "local-ai";
 
 function HomePage() {
   const [consoleMode, setConsoleMode] = useState<ConsoleMode>("commands");
-  const [input, setInput] = useState<string>("help");
   const [isThinking, setIsThinking] = useState(false);
   const [isLocalAiLoaded, setIsLocalAiLoaded] = useState(false);
-  const [terminalHistory, setTerminalHistory] = useState<TerminalHistoryItem[]>([
-    {
-      command: "help",
-      lines: terminalResponses.help,
-    },
-  ]);
+  const [input, setInput] = useState<string>("");
+  const [terminalHistory, setTerminalHistory] = useState<TerminalHistoryItem[]>([]);
 
   function getCommandLines(command: string) {
     if (command in terminalResponses) {
@@ -62,7 +57,7 @@ function HomePage() {
     }
 
     if (consoleMode === "commands") {
-      setInput(normalized);
+      setInput("");
       setTerminalHistory((current) => [
         ...current,
         {
@@ -194,11 +189,14 @@ function HomePage() {
 
   useEffect(() => {
     if (consoleMode === "commands") {
-      setInput("help");
+      setInput("");
       setTerminalHistory([
         {
-          command: "help",
-          lines: terminalResponses.help,
+          command: "welcome",
+          lines: [
+            "Welcome to the Developer Console.",
+            "Select a command below or try one of the AI modes.",
+          ],
         },
       ]);
     }
